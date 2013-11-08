@@ -16,19 +16,7 @@ module ParallelTests
         run_tests_in_parallel(num_processes, options)
       end
     end
-
-    private
-
-    def execute_in_parallel(items, num_processes, options)
-      Tempfile.open 'parallel_tests-lock' do |lock|
-        return Parallel.map(items, :in_threads => num_processes) do |item|
-          result = yield(item)
-          report_output(result, lock) if options[:serialize_stdout]
-          result
-        end
-      end
-    end
-
+    
     def run_tests_in_parallel(num_processes, options)
       test_results = nil
 
@@ -44,6 +32,18 @@ module ParallelTests
       end
 
       abort final_fail_message if any_test_failed?(test_results)
+    end
+
+    private
+
+    def execute_in_parallel(items, num_processes, options)
+      Tempfile.open 'parallel_tests-lock' do |lock|
+        return Parallel.map(items, :in_threads => num_processes) do |item|
+          result = yield(item)
+          report_output(result, lock) if options[:serialize_stdout]
+          result
+        end
+      end
     end
 
     def run_tests(group, process_number, num_processes, options)
