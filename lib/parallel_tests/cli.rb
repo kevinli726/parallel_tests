@@ -16,8 +16,9 @@ module ParallelTests
         run_tests_in_parallel(num_processes, options)
       end
     end
-    
+
     def run_tests_in_parallel(num_processes, options)
+      @runner = load_runner("rspec")
       test_results = nil
 
       report_time_taken do
