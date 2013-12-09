@@ -17,7 +17,7 @@ module ParallelTests
       end
     end
 
-    def run_tests_in_parallel(num_processes, options)
+    def run_tests_in_parallel(num_processes, options, sauce=false)
       @runner = load_runner("rspec")
       test_results = nil
 
@@ -26,7 +26,7 @@ module ParallelTests
         report_number_of_tests(groups)
 
         test_results = execute_in_parallel(groups, groups.size, options) do |group|
-          run_tests(group, groups.index(group), num_processes, options)
+          run_tests(group, groups.index(group), num_processes, options, sauce)
         end
 
         report_results(test_results)
@@ -47,11 +47,11 @@ module ParallelTests
       end
     end
 
-    def run_tests(group, process_number, num_processes, options)
+    def run_tests(group, process_number, num_processes, options, sauce)
       if group.empty?
         {:stdout => '', :exit_status => 0}
       else
-        @runner.run_tests(group, process_number, num_processes, options)
+        @runner.run_tests(group, process_number, num_processes, options, sauce)
       end
     end
 
