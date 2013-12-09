@@ -6,8 +6,9 @@ module ParallelTests
       NAME = 'RSpec'
 
       class << self
-        def run_tests(test_files, process_number, num_processes, options)
+        def run_tests(test_files, process_number, num_processes, options, sauce)
           exe = executable # expensive, so we cache
+          exe = "./sauce_test" if sauce
           version = (exe =~ /\brspec\b/ ? 2 : 1)
           cmd = [exe, options[:test_options], (rspec_2_color if version == 2), spec_opts, "-s", test_files.join(',')].compact.join(" ")
           puts cmd
