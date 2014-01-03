@@ -29,7 +29,7 @@ module ParallelTests
           #   %w[spec rspec].detect{|cmd| system "#{cmd} --version > /dev/null 2>&1" }
           # end
 
-          cmd = "./test"
+          cmd = "./automation"
 
           cmd or raise("Can't find executables rspec or spec")
         end
