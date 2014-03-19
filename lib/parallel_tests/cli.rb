@@ -2,6 +2,12 @@ require 'optparse'
 require 'tempfile'
 require 'parallel_tests'
 
+class String
+  def reverse_color
+    "\033[7m#{self}\033[27m"
+  end
+end
+
 module ParallelTests
   class CLI
     def run(argv)
@@ -19,8 +25,8 @@ module ParallelTests
 
     def run_tests_in_parallel(num_processes, options, sauce=false)
       if options[:test_options].include? 'chrome'
-        puts "WARNING: Looks like you're running tests in parallel using GOOGLE CHOME!"
-        puts "Did you run ./chromedriver_server yet? (Ideally in another terminal window)"
+        puts "WARNING: Looks like you're running tests in parallel using GOOGLE CHROME!".reverse_color
+        puts "Did you run ./chromedriver_server yet? (Ideally in another terminal window)".reverse_color
       end
       @runner = load_runner("rspec")
       test_results = nil
