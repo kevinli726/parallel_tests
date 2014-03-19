@@ -10,7 +10,11 @@ module ParallelTests
           exe = executable # expensive, so we cache
           exe = "./sauce_test" if sauce
           version = (exe =~ /\brspec\b/ ? 2 : 1)
-          cmd = [exe, options[:test_options], (rspec_2_color if version == 2), spec_opts, "-s", test_files.join(',')].compact.join(" ")
+          if options[:test_options].include? 'chrome'
+            cmd = [exe, ['--port', 9515+process_number], options[:test_options], (rspec_2_color if version == 2), spec_opts, "-s", test_files.join(',')].compact.join(" ")
+          else
+            cmd = [exe, options[:test_options], (rspec_2_color if version == 2), spec_opts, "-s", test_files.join(',')].compact.join(" ")
+          end
           puts cmd
           options = options.merge(:env => rspec_1_color) if version == 1
           execute_command(cmd, process_number, num_processes, options)
