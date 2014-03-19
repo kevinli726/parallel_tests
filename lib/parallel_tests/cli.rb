@@ -18,6 +18,10 @@ module ParallelTests
     end
 
     def run_tests_in_parallel(num_processes, options, sauce=false)
+      if options[:test_options].include? 'chrome'
+        puts "WARNING: Looks like you're running tests in parallel using GOOGLE CHOME!"
+        puts "Did you run ./chromedriver_server yet? (Ideally in another terminal window)"
+      end
       @runner = load_runner("rspec")
       test_results = nil
 
